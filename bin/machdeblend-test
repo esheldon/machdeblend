@@ -6,20 +6,23 @@ from argparse import ArgumentParser
 parser=ArgumentParser()
 parser.add_argument('--ntrials',type=int,default=1)
 
-def show_both(im, scene_im):
+def show_both(im, scene_im, is_last):
     try:
         # my image plotting
         import images
-        images.multiview(im)
-
-        images.view(scene_im)
-
-        key=input('hit enter')
-
+        import biggles
+        tab=biggles.Table(1,2)
+        tab[0,0] = images.view(im,show=False)
+        tab[0,1] = images.view(scene_im,show=False)
+        tab.show()
+        if not is_last:
+            key=input('hit enter ')
 
     except ImportError:
         # fall back to matplotlib
         import matplotlib.pyplot as plt
+        plt.ion()
+        plt.show()
 
         w=10
         h=10
@@ -30,7 +33,11 @@ def show_both(im, scene_im):
         plt.imshow(im, interpolation='nearest')
         fig.add_subplot(rows, columns, 2)
         plt.imshow(scene_im, interpolation='nearest')
-        plt.show()
+        #plt.show()
+        plt.draw()
+
+        key=input('hit enter ')
+
 
 
 def test():
@@ -75,7 +82,7 @@ def test():
         # objects
         scene_im = maker.get_scene()
 
-        show_both(im, scene_im)
+        show_both(im, scene_im, is_last=(i == args.ntrials-1) )
 
 
 if __name__=='__main__':

@@ -1,6 +1,9 @@
 import os
 from distutils.core import setup
+from glob import glob
 
+scripts=glob('bin/*')
+scripts = [s for s in scripts if '~' not in s]
 
 setup(
     name="machdeblend", 
@@ -9,5 +12,6 @@ setup(
     license = "GPL",
     author="Erin Scott Sheldon, Chi-ting Chiang",
     author_email="erin.sheldon@gmail.com",
+    scripts=scripts,
     packages=['machdeblend'],
 )

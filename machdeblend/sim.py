@@ -12,14 +12,12 @@ class ImageMaker(dict):
             rng=np.random.RandomState()
         self.rng=rng
 
-        self.pixel_scale=0.263
-
     def get_scene(self):
         """
         get a scene with multiple objects
         """
         c=self['scene']
-        dims = [int(c['size']/self.pixel_scale)]*2
+        dims = [int(c['size']/self['pixel_scale'])]*2
 
         halfsize = c['size']/2.0
 
@@ -64,7 +62,7 @@ class ImageMaker(dict):
         im = obj.drawImage(
             nx=nx,
             ny=ny,
-            scale=self.pixel_scale,
+            scale=self['pixel_scale'],
         ).array
 
         self._add_noise(im)
@@ -86,8 +84,8 @@ class ImageMaker(dict):
         shifts within one pixel
         """
         dx, dy = self.rng.uniform(
-            low  = -0.5*self.pixel_scale,
-            high =  0.5*self.pixel_scale,
+            low  = -0.5*self['pixel_scale'],
+            high =  0.5*self['pixel_scale'],
             size=2,
         )
         return dx, dy
